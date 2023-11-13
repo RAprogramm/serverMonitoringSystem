@@ -1,6 +1,23 @@
+<script src="/static/admin/js/pusher.min.js"></script>
+
 <script>
+    // Create a new Pusher instance with the provided key and configuration options
+    let pusher = new Pusher("{{.PreferenceMap["pusher-key"]}}", {
+        authEndPoint: "/pusher/auth",
+        wsHost: "localhost",
+        wsPort: 4001,
+        forceTLS: false,
+        enabledTransports: ["ws", "wss"],
+        disabledTransport: []
+    });
+
+    // Subscribe to a public channel named "public-channel"
+    let publicChannel = pusher.subscribe("public-channel");
+
+    // Create a Prompt instance named "attention"
     let attention = Prompt();
 
+    // Display success, warning, and error alerts based on server-side messages
     {{if .Flash != ""}}
         successAlert('{{.Flash}}')
     {{end}}
